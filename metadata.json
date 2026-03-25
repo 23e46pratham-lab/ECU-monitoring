@@ -1,0 +1,5 @@
+{
+  "name": "Smart ECU Monitoring & Predictive Maintenance",
+  "description": "A real-time vehicle telemetry dashboard with driver behavior analysis, mileage tracking, and ML-based health monitoring.",
+  "requestFramePermissions": []
+}

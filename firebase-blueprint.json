@@ -1,0 +1,41 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user account information and vehicle details.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique user ID from Firebase Auth" },
+        "email": { "type": "string", "format": "email", "description": "User's email address" },
+        "displayName": { "type": "string", "description": "User's display name" },
+        "vehicleModel": { "type": "string", "description": "Model of the vehicle" },
+        "createdAt": { "type": "number", "description": "Timestamp when the profile was created" }
+      },
+      "required": ["uid", "email", "createdAt"]
+    },
+    "MaintenanceLog": {
+      "title": "Maintenance Log",
+      "description": "Stores vehicle maintenance events and alerts.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique log ID" },
+        "uid": { "type": "string", "description": "User ID who owns this log" },
+        "type": { "type": "string", "description": "Type of maintenance (e.g., Oil Change, Fault Detected)" },
+        "description": { "type": "string", "description": "Detailed description of the event" },
+        "timestamp": { "type": "number", "description": "Timestamp of the event" },
+        "status": { "type": "string", "enum": ["pending", "completed"], "description": "Status of the maintenance task" }
+      },
+      "required": ["id", "uid", "type", "timestamp", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "UserProfile",
+      "description": "Collection of user profiles."
+    },
+    "/users/{uid}/maintenanceLogs/{logId}": {
+      "schema": "MaintenanceLog",
+      "description": "Subcollection of maintenance logs for a specific user."
+    }
+  }
+}
