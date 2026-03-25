@@ -17,7 +17,7 @@ export const CircularGauge: React.FC<GaugeProps> = ({ value, max, label, unit, c
 
   return (
     <div className="relative flex flex-col items-center justify-center w-48 h-48">
-      <svg className="w-full h-full transform -rotate-90">
+      <svg className="w-full h-full transform -rotate-90 overflow-visible" viewBox="0 0 192 192">
         {/* Background Track */}
         <circle
           cx="96"
