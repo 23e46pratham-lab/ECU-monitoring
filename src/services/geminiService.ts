@@ -72,6 +72,32 @@ export async function performDeepAnalysis(
   }
 }
 
+export async function getChatResponse(message: string, telemetry: TelemetryData): Promise<string> {
+  const prompt = `
+    User Message: ${message}
+    
+    Current Vehicle Telemetry Context:
+    - RPM: ${telemetry.rpm}
+    - Speed: ${telemetry.vss} km/h
+    - Engine Load: ${telemetry.engineLoad}%
+    - Coolant Temp: ${telemetry.coolantTemp}°C
+    - Active Fault Codes: ${telemetry.dtcs.length > 0 ? telemetry.dtcs.join(", ") : "None"}
+
+    Provide a helpful, concise response to the user's message, taking the current vehicle telemetry into account if relevant.
+  `;
+
+  try {
+    const response: GenerateContentResponse = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: prompt,
+    });
+    return response.text || "I'm sorry, I couldn't process that request.";
+  } catch (error) {
+    console.error("Chat Error:", error);
+    throw error;
+  }
+}
+
 /**
  * Multi-turn chat for vehicle diagnostics.
  */
