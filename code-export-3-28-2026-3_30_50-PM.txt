@@ -1,0 +1,65 @@
+title ECU Guardian - IoT Vehicle Telemetry & ML Architecture
+
+direction down
+textSize large
+
+Edge Devices [icon: cpu, color: blue] {
+  "OBD-II Scanner" [icon: bluetooth]
+  Mobile App [icon: smartphone]
+}
+
+Data Ingestion [icon: aws-api-gateway, color: green] {
+  IoT Gateway [icon: aws-iot-core, label: "IoT API Gateway / MQTT"]
+  Stream Processor [icon: aws-kinesis, label: "Kafka / Kinesis"]
+}
+
+Application Layer [icon: server, color: purple] {
+  Telemetry Service [icon: activity, label: "Telemetry Ingestion"]
+  Rule Engine [icon: git-branch, label: "Rule-Based Engine"]
+  Notification Service [icon: bell]
+}
+
+ML Pipeline [icon: aws-sagemaker, color: orange] {
+  Feature Engineering [icon: sliders, label: "Feature Engineering"]
+  KMeans Service [icon: pie-chart, label: "K-Means Clustering"]
+  RF Inference [icon: git-merge, label: "Random Forest"]
+  LSTM Engine [icon: trending-up, label: "LSTM Prediction"]
+}
+
+Data Storage [icon: database, color: gray] {
+  TimeSeries DB [icon: clock, label: "InfluxDB / TimescaleDB"]
+  Relational DB [icon: postgresql, label: "PostgreSQL"]
+  Model Registry [icon: aws-s3, label: "MLflow / S3"]
+}
+
+// Edge to Ingestion
+"OBD-II Scanner" > IoT Gateway: streaming telemetry
+IoT Gateway > Stream Processor
+
+// Stream routing
+Stream Processor > Telemetry Service
+Stream Processor > TimeSeries DB: store raw data
+
+// Application flow
+Telemetry Service > Rule Engine
+Telemetry Service > Feature Engineering
+Rule Engine <> Relational DB: fault code lookup
+
+// ML Pipeline
+Feature Engineering > KMeans Service
+Feature Engineering > RF Inference
+Feature Engineering > LSTM Engine
+RF Inference <-- Model Registry: load weights
+LSTM Engine <-- Model Registry: load weights
+
+// ML outputs
+KMeans Service < Notification Service: driver behavior
+RF Inference < Notification Service: anomaly alerts
+LSTM Engine < Notification Service: maintenance predictions
+KMeans Service > Relational DB: store classifications
+RF Inference > Relational DB: store predictions
+LSTM Engine > Relational DB: store forecasts
+
+// Mobile App connections
+Notification Service < Mobile App: push alerts
+Mobile App <> Relational DB: user data & analytics
