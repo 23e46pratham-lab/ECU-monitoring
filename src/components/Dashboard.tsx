@@ -110,8 +110,8 @@ export const Dashboard: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white/80 backdrop-blur-xl border border-slate-200 p-10 rounded-[32px] max-w-md w-full text-center space-y-8 shadow-2xl relative z-10"
         >
-          <div className="w-20 h-20 bg-sky-500/10 rounded-full flex items-center justify-center mx-auto border border-sky-500/30">
-            <Activity className="text-sky-500" size={40} />
+          <div className="w-24 h-24 flex items-center justify-center mx-auto rounded-full overflow-hidden shadow-sm border border-slate-200 bg-white">
+            <img src="/logo.png" alt="Smart ECU Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
           <div className="space-y-2">
             <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Smart ECU</h1>
@@ -280,8 +280,8 @@ export const Dashboard: React.FC = () => {
         <div className="p-4 flex items-center justify-between border-b border-slate-200 h-20">
           {!isSidebarCollapsed && (
             <div className="flex items-center gap-3 overflow-hidden">
-              <div className="w-10 h-10 bg-sky-500/10 rounded-xl flex items-center justify-center border border-sky-500/30 shrink-0">
-                <Activity className="text-sky-500" size={20} />
+              <div className="w-10 h-10 flex items-center justify-center shrink-0 rounded-full overflow-hidden shadow-sm border border-slate-200 bg-white">
+                <img src="/logo.png" alt="Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
               <span className="font-bold tracking-tight whitespace-nowrap text-lg text-slate-900">Smart ECU</span>
             </div>
