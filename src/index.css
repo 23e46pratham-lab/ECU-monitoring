@@ -1,28 +1,364 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-hud: "Rajdhani", sans-serif;
+  --font-mono: "Share Tech Mono", monospace;
+  --font-display: "Barlow Condensed", sans-serif;
+  --font-body: "Barlow", sans-serif;
+
+  --color-bg-deep: #040608;
+  --color-bg-panel: #070C12;
+  --color-bg-card: #0A1018;
+  --color-bg-elevated: #0F1922;
+  --color-border: #1A2535;
+  --color-border-accent: #1E3A5F;
+
+  --color-cyan: #00D4FF;
+  --color-cyan-dim: #00A0BF;
+  --color-amber: #FFB800;
+  --color-amber-dim: #CC8800;
+  --color-red: #FF3333;
+  --color-green: #00FF88;
+  --color-green-dim: #00CC6A;
+  --color-purple: #9B5DE5;
+
+  --color-text-primary: #E8F4FF;
+  --color-text-secondary: #6B8CAE;
+  --color-text-muted: #344D63;
 }
 
-@layer base {
-  body {
-    @apply bg-[#0B0F19] text-white antialiased;
-  }
+* {
+  box-sizing: border-box;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
+:root {
+  --cyan: #00D4FF;
+  --cyan-dim: #007A99;
+  --amber: #FFB800;
+  --red: #FF3333;
+  --green: #00FF88;
+  --purple: #9B5DE5;
+  --bg-deep: #040608;
+  --bg-panel: #070C12;
+  --bg-card: #0A1018;
+  --border: #1A2535;
+  --text-primary: #E8F4FF;
+  --text-secondary: #6B8CAE;
+  --text-muted: #344D63;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: "Barlow", sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* ─── SCROLLBAR ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-panel); }
+::-webkit-scrollbar-thumb { background: var(--cyan-dim); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan); }
+
+/* ─── HUD SCANLINE OVERLAY ───────────────────────────────────── */
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 212, 255, 0.015) 2px,
+    rgba(0, 212, 255, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─── PANEL BORDERS ──────────────────────────────────────────── */
+.panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.5;
+}
+
+.panel-amber::before { background: linear-gradient(90deg, transparent, var(--amber), transparent); }
+.panel-red::before { background: linear-gradient(90deg, transparent, var(--red), transparent); }
+.panel-green::before { background: linear-gradient(90deg, transparent, var(--green), transparent); }
+
+/* ─── CORNER BRACKETS ────────────────────────────────────────── */
+.corner-bracket {
+  position: relative;
+}
+.corner-bracket::before,
+.corner-bracket::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+}
+.corner-bracket::before {
+  top: 0; left: 0;
+  border-top: 2px solid var(--cyan);
+  border-left: 2px solid var(--cyan);
+}
+.corner-bracket::after {
+  bottom: 0; right: 0;
+  border-bottom: 2px solid var(--cyan);
+  border-right: 2px solid var(--cyan);
+}
+
+/* ─── GLOW EFFECTS ───────────────────────────────────────────── */
+.glow-cyan { box-shadow: 0 0 20px rgba(0, 212, 255, 0.15), 0 0 40px rgba(0, 212, 255, 0.05); }
+.glow-amber { box-shadow: 0 0 20px rgba(255, 184, 0, 0.15), 0 0 40px rgba(255, 184, 0, 0.05); }
+.glow-red { box-shadow: 0 0 20px rgba(255, 51, 51, 0.2), 0 0 40px rgba(255, 51, 51, 0.1); }
+.glow-green { box-shadow: 0 0 20px rgba(0, 255, 136, 0.15), 0 0 40px rgba(0, 255, 136, 0.05); }
+
+.text-glow-cyan { text-shadow: 0 0 10px rgba(0, 212, 255, 0.6); }
+.text-glow-amber { text-shadow: 0 0 10px rgba(255, 184, 0, 0.6); }
+.text-glow-red { text-shadow: 0 0 10px rgba(255, 51, 51, 0.6); }
+.text-glow-green { text-shadow: 0 0 10px rgba(0, 255, 136, 0.6); }
+
+/* ─── HUD TYPOGRAPHY ─────────────────────────────────────────── */
+.hud-label {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+}
+
+.hud-value {
+  font-family: "Share Tech Mono", monospace;
+  color: var(--text-primary);
+}
+
+.hud-display {
+  font-family: "Barlow Condensed", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* ─── GAUGE ANIMATIONS ───────────────────────────────────────── */
+@keyframes sweep {
+  from { stroke-dashoffset: 565; }
+}
+
+@keyframes blink-alert {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes data-tick {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+.animate-blink { animation: blink-alert 1s ease-in-out infinite; }
+.animate-scan { animation: scan-line 4s linear infinite; }
+.animate-data-tick { animation: data-tick 2s ease-in-out infinite; }
+
+/* ─── METER BARS ─────────────────────────────────────────────── */
+.meter-track {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.meter-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: white;
+  opacity: 0.8;
+  filter: blur(1px);
+}
+
+/* ─── STATUS BADGE ───────────────────────────────────────────── */
+.status-dot {
   width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
 }
-::-webkit-scrollbar-track {
-  background: #0B0F19;
+
+/* ─── MINI SPARKLINE ─────────────────────────────────────────── */
+.sparkline-wrapper {
+  position: relative;
+  overflow: hidden;
 }
-::-webkit-scrollbar-thumb {
-  background: #2D3748;
-  border-radius: 10px;
+
+/* ─── BUTTON STYLES ──────────────────────────────────────────── */
+.btn-hud {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #3D4758;
+
+.btn-hud::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  transition: left 0.3s ease;
+}
+
+.btn-hud:hover::before { left: 100%; }
+
+.btn-cyan {
+  border-color: var(--cyan-dim);
+  color: var(--cyan);
+  background: rgba(0, 212, 255, 0.06);
+}
+.btn-cyan:hover {
+  border-color: var(--cyan);
+  background: rgba(0, 212, 255, 0.12);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+.btn-amber {
+  border-color: rgba(255, 184, 0, 0.4);
+  color: var(--amber);
+  background: rgba(255, 184, 0, 0.06);
+}
+.btn-amber:hover {
+  border-color: var(--amber);
+  background: rgba(255, 184, 0, 0.12);
+  box-shadow: 0 0 15px rgba(255, 184, 0, 0.2);
+}
+
+.btn-red {
+  border-color: rgba(255, 51, 51, 0.4);
+  color: var(--red);
+  background: rgba(255, 51, 51, 0.06);
+}
+.btn-red:hover {
+  border-color: var(--red);
+  background: rgba(255, 51, 51, 0.12);
+  box-shadow: 0 0 15px rgba(255, 51, 51, 0.2);
+}
+
+/* ─── NAV ITEM ───────────────────────────────────────────────── */
+.nav-item {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-item.active {
+  color: var(--cyan);
+}
+
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0; right: 0;
+  height: 2px;
+  background: var(--cyan);
+  box-shadow: 0 0 8px var(--cyan);
+}
+
+/* ─── CHART TOOLTIP ──────────────────────────────────────────── */
+.chart-tooltip {
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--border) !important;
+  font-family: "Share Tech Mono", monospace !important;
+  font-size: 0.75rem !important;
+  color: var(--text-primary) !important;
+}
+
+/* ─── SCROLLABLE AREA ────────────────────────────────────────── */
+.scroll-area {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cyan-dim) var(--bg-panel);
+}
+
+/* ─── GRID BACKGROUND ────────────────────────────────────────── */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ─── ALERT FLASH ────────────────────────────────────────────── */
+@keyframes alert-flash {
+  0%, 100% { background-color: rgba(255, 51, 51, 0); }
+  50% { background-color: rgba(255, 51, 51, 0.1); }
+}
+
+.alert-flash { animation: alert-flash 1.5s ease-in-out infinite; }
+
+/* ─── INPUT STYLES ───────────────────────────────────────────── */
+.hud-input {
+  background: rgba(0, 212, 255, 0.04);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: "Barlow", sans-serif;
+  transition: all 0.2s ease;
+}
+
+.hud-input:focus {
+  outline: none;
+  border-color: var(--cyan-dim);
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.1);
+}
+
+.hud-input::placeholder {
+  color: var(--text-muted);
 }

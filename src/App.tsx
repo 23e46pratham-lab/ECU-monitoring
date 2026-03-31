@@ -4,11 +4,8 @@
  */
 
 import { Dashboard } from "./components/Dashboard";
+import "./index.css";
 
 export default function App() {
-  return (
-    <div className="min-h-screen bg-[#0B0F19]">
-      <Dashboard />
-    </div>
-  );
+  return <Dashboard />;
 }
