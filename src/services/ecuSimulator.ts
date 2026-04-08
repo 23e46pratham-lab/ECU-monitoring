@@ -1,7 +1,26 @@
 import { TelemetryData } from "../types";
 
-export function simulateECUData(prevData?: TelemetryData): TelemetryData {
+export function simulateECUData(prevData?: TelemetryData | null): TelemetryData {
   const now = Date.now();
+
+  if (prevData === null) {
+    return {
+      rpm: 0,
+      vss: 0,
+      maf: 0,
+      throttle: 0,
+      engineLoad: 0,
+      coolantTemp: 20,
+      oilTemp: 20,
+      intakeAirTemp: 20,
+      shortTermFuelTrim: 0,
+      longTermFuelTrim: 0,
+      o2Voltage: 0,
+      brakeSwitch: false,
+      dtcs: [],
+      timestamp: now,
+    };
+  }
   
   // Base values
   let rpm = prevData ? prevData.rpm : 800;

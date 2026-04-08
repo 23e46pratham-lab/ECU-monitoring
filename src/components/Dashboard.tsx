@@ -70,9 +70,42 @@ export const Dashboard: React.FC = () => {
   const [hasAlerts, setHasAlerts] = useState(false);
   const [alertCount, setAlertCount] = useState(0);
 
+  const resetStates = useCallback(() => {
+    const zeroed = simulateECUData(null);
+    setTelemetry(zeroed);
+    setHistory([]);
+    setBehavior("Moderate");
+    setHealth({
+      score: 100,
+      status: "Healthy",
+      predictions: [],
+      faults: [],
+    });
+    setMileage(0);
+    setTripTime(0);
+    setTotalDistance(0);
+    tripStartRef.current = Date.now();
+    setAiSuggestion("System reset. Analyzing new data stream...");
+    lastAiUpdate.current = 0;
+  }, []);
+
   const { isLive, setIsLive, isConnected, connectOBD } = useDataSource();
   const lastAiUpdate = useRef(0);
   const tripStartRef = useRef(Date.now());
+
+  // Handle data source switch
+  const handleToggleDataSource = async () => {
+    const newIsLive = !isLive;
+    
+    // Always reset states when switching
+    resetStates();
+    
+    setIsLive(newIsLive);
+    
+    if (newIsLive) {
+      await connectOBD();
+    }
+  };
 
   // Auth
   useEffect(() => {
@@ -324,10 +357,7 @@ export const Dashboard: React.FC = () => {
               </span>
             </div>
             <button
-              onClick={() => {
-                setIsLive(!isLive);
-                if (!isLive) connectOBD();
-              }}
+              onClick={handleToggleDataSource}
               className="btn-hud w-full py-1.5 text-[10px] flex items-center justify-center gap-2"
               style={{
                 borderColor: isLive ? "rgba(255,184,0,0.4)" : "rgba(0,212,255,0.3)",
